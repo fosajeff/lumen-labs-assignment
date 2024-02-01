@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/User";
 
 export interface IToken {
-  id: string;
+  id: number;
   expiresIn: string;
 }
 
@@ -17,7 +17,7 @@ export const generateToken = (user: User): string => {
 
 export const verifyToken = async (
   token: string
-): Promise<jwt.VerifyErrors | IToken> => {
+): Promise<any> => {
   return new Promise((resolve, reject) => {
     jwt.verify(
       token,
@@ -25,13 +25,13 @@ export const verifyToken = async (
       (err, payload) => {
         if (err) return reject(err);
 
-        resolve(payload as IToken);
+        resolve(payload);
       }
     );
   });
 };
 
-export const decodeJwt = (token: string) => jwt.decode(token);
+export const decodeJwt = (token: string) => jwt.decode(token) as IToken;
 
 export function getBearerToken(req: Request): string | undefined {
   return req.headers.authorization?.split("Bearer ")[1].trim();

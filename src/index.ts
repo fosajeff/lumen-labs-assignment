@@ -1,13 +1,16 @@
 import { __isProd__ } from "./utils/helpers";
-__isProd__ && require("dotenv").config()
+!__isProd__ && require("dotenv").config()
 
 import cors from "cors";
 import express, { Response } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 
+import {Container} from "typedi"
+
 import { AppDataSource } from "./utils/data-source";
-import ErrorMiddleware from "./utils/middleware";
+import ErrorMiddleware, { authenticationMiddleware } from "./utils/middleware";
+import { UserController } from "./controllers/UserController";
 
 
 const app = express();
@@ -19,6 +22,16 @@ app.use(morgan("dev"));
 
 
 // endpoints
+const userController = Container.get(UserController)
+app.post("/signup", (req, res, next) => userController.signUp(req, res, next))
+app.post("/login", (req, res, next) => userController.login(req, res, next))
+app.get("/me", authenticationMiddleware, (req, res, next) => userController.getCurrentLoggedInUser(req, res, next))
+app.put("/me/update-password", authenticationMiddleware, (req, res, next) => userController.updatePassword(req, res, next))
+app.get("/user/:id", authenticationMiddleware, (req, res, next) => userController.findById(req, res, next))
+app.post("/user/:id/follow", authenticationMiddleware, (req, res, next) => userController.followUser(req, res, next))
+app.delete("/user/:id/unfollow", authenticationMiddleware, (req, res, next) => userController.unFollowUser(req, res, next))
+app.get("/most-followed", authenticationMiddleware, (req, res, next) => userController.followUser(req, res, next))
+
 
 
 // HEALTH CHECKER

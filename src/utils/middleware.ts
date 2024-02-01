@@ -12,7 +12,7 @@ export default function errorMiddleware(
   const status = error.status || 500;
   const message = error.message || "Internal Server Error.";
 
-  res.status(status).json({ status, message });
+  res.status(status).json({ status, message, stack: error.stack });
 }
 
 export async function authenticationMiddleware(

@@ -41,5 +41,8 @@
       "reflect-metadata": "^0.1.13",
       "typedi": "^0.10.0",
       "typeorm": "0.3.17"
+   },
+   "engines": {
+      "node": ">=20.11.0"
    }
 }

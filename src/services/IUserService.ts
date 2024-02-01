@@ -1,4 +1,3 @@
-import { DeleteDateColumn } from "typeorm";
 import {
   authDto, updatePasswordDto,
 } from "../dto/auth.dto";
@@ -11,6 +10,4 @@ export interface IUserService {
   find(): Promise<User[]>;
   findById(id: number): Promise<User | null>;
   getCurrentLoggedInUser(id: number): Promise<User | null>;
-  followUser(id: number): Promise<void>;
-  unFollowUser(id: number): Promise<void>;
 }

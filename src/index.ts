@@ -11,6 +11,7 @@ import {Container} from "typedi"
 import { AppDataSource } from "./utils/data-source";
 import ErrorMiddleware, { authenticationMiddleware } from "./utils/middleware";
 import { UserController } from "./controllers/UserController";
+import { FollowController } from "./controllers/FollowController";
 
 
 const app = express();
@@ -28,9 +29,11 @@ app.post("/login", (req, res, next) => userController.login(req, res, next))
 app.get("/me", authenticationMiddleware, (req, res, next) => userController.getCurrentLoggedInUser(req, res, next))
 app.put("/me/update-password", authenticationMiddleware, (req, res, next) => userController.updatePassword(req, res, next))
 app.get("/user/:id", authenticationMiddleware, (req, res, next) => userController.findById(req, res, next))
-app.post("/user/:id/follow", authenticationMiddleware, (req, res, next) => userController.followUser(req, res, next))
-app.delete("/user/:id/unfollow", authenticationMiddleware, (req, res, next) => userController.unFollowUser(req, res, next))
-app.get("/most-followed", authenticationMiddleware, (req, res, next) => userController.followUser(req, res, next))
+
+const followController = Container.get(FollowController)
+app.put("/user/:id/follow", authenticationMiddleware, (req, res, next) => followController.follow(req, res, next))
+app.delete("/user/:id/unfollow", authenticationMiddleware, (req, res, next) => followController.unfollow(req, res, next))
+app.get("/most-followed", authenticationMiddleware, (req, res, next) => followController.mostFollowed(req, res, next))
 
 
 

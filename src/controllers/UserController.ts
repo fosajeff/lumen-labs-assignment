@@ -73,13 +73,4 @@ export class UserController {
     return success(response, result);
   }
 
-  async followUser(request: Request, response: Response, next: NextFunction) {
-    const id = Number(request.params.id);
-    return await this.userService.followUser(id);
-  }
-
-  async unFollowUser(request: Request, response: Response, next: NextFunction) {
-     const id = Number(request.params.id);   
-    return await this.userService.unFollowUser(id);
-  }
 }

@@ -29,7 +29,9 @@ export class UserService implements IUserService {
     }
 
     data.password = await bcrypt.hash(data.password, 10);
-    user =  await this.userRepository.save(data);
+    user =  await this.userRepository.save({
+      username: data.username, password: data.password
+    } as User);
     delete user.password;
     return user;
   }
@@ -99,16 +101,13 @@ export class UserService implements IUserService {
   }
   async findById(id: number): Promise<User | null> {
     const user = await this.userRepository.findById(id);
+    user.no_of_followers = user.followers.length;
     delete user.password;
     return user;
   }
   async getCurrentLoggedInUser(id: number): Promise<User> {
-    return this.userRepository.findById(id);
-  }
-  async followUser(id: number): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
-  async unFollowUser(id: number): Promise<void> {
-    throw new Error("Method not implemented.");
+    const result = await this.userRepository.findById(id);
+    result.no_of_followers = result.followers.length;
+    return result
   }
 }

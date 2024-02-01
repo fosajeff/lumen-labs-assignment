@@ -18,11 +18,15 @@ export default class UserRepository implements IBaseRepository<User> {
     this.userRepository.delete({ id });
   }
   async find(): Promise<User[]> {
-    return this.userRepository.find();
+    return this.userRepository.find({
+      relations: ['followers'],
+    });
   }
   async findById(id: number): Promise<User | null> {
     return this.userRepository.findOne({ where: { id },
-      select: ['id', 'username', 'created_at', 'updated_at', 'is_active', 'is_deleted'] });
+      select: ['id', 'username', 'created_at', 'updated_at', 'is_active', 'is_deleted'],
+      relations: ['following', 'followers']
+    });
   }
   async findByUsername(username: string): Promise<User | null> {
     return await this.userRepository.findOneBy({ username });

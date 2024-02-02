@@ -38,11 +38,14 @@ export class FollowService implements IFollowService {
   }
   async mostFollowed(): Promise<User[]> {
     const users = await this.userRepository.find();
-    const result = users.map((user) => {
-      user.no_of_followers = user.followers.length;
-      return user;
-    });
-    result.sort((a, b) => b.no_of_followers - a.no_of_followers);
-    return users;
+    if (users.length > 0) {
+      const result = users.map((user) => {
+        user.no_of_followers = user.followers.length;
+        return user;
+      });
+      result.sort((a, b) => b.no_of_followers - a.no_of_followers);
+      return result;
+    }
+    return
   }
 }

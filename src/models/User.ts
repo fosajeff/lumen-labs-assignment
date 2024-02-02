@@ -6,7 +6,7 @@ import {
 import { BaseModel } from "./BaseModel";
 import { Follow } from "./Follow";
 
-@Entity("users")
+@Entity()
 export class User extends BaseModel {
   
   @Column({ nullable: false, unique: true })
@@ -18,10 +18,10 @@ export class User extends BaseModel {
   @Column({ nullable: false, select: false, default: 0 })
   no_of_followers: number;
 
-  @OneToMany(() => Follow, follow => follow.follower)
+  @OneToMany(() => Follow, follow => follow.follower, { cascade: true })
   following: Follow[];
 
-  @OneToMany(() => Follow, follow => follow.followee)
+  @OneToMany(() => Follow, follow => follow.followee, { cascade: true })
   followers: Follow[];
 
   

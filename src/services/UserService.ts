@@ -17,7 +17,7 @@ import { IUserService } from "./IUserService";
 export class UserService implements IUserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async signUp(data: authDto): Promise<User | void> {
+  async signUp(data: authDto): Promise<User> {
     const { error } = validateAuthDto(data);
 
     if (error) {
@@ -50,7 +50,8 @@ export class UserService implements IUserService {
       .getOne();
 
     if (!user) {
-      throw new HttpException(404, "Incorrect email or password");
+      console.log("THE USER")
+      throw new HttpException(404, "Incorrect username or password");
     }
 
     if (user) {
@@ -60,7 +61,8 @@ export class UserService implements IUserService {
         return user;
       }
     }
-    throw new HttpException(404, "Incorrect email or password");
+    console.log("THE PASSWORD")
+    throw new HttpException(404, "Incorrect username or password");
   }
 
   async updatePassword(id: number, data: updatePasswordDto): Promise<User> {

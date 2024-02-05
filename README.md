@@ -17,7 +17,7 @@ Update the current users password
 List username & number of followers of a user
 6. PUT /user/:id/follow
 Like a user
-7. PUT /user/:id/unfollow
+7. DELETE /user/:id/unfollow
 Un-Like a user
 8. GET /most-followed
 List users in a most liked to least liked
